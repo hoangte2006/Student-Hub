@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Danh sách học sinh{% endblock %}
+{% load static %}
+
+{% block styles %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'students/css/student_table.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>Danh sách học sinh</h1>
+<p>Trang đang hoạt động</p>
+
+
+{% include "students/student_task_list/deleted_alert.html" %}
+{% include "students/student_task_list/filter_form.html" %}
+
+<a href="{% url 'add_student' %}" class="btn btn-primary">Thêm học sinh mới</a>
+<a href="{% url 'trash_list' %}" class="btn btn-outline-danger">Thùng rác</a>
+
+<!--Để bộ lọc năng cao gần bộ bộ thường-->
+<button 
+  class="btn btn-secondary" 
+  type="button" 
+  data-bs-toggle="collapse" 
+  data-bs-target="#advancedFilter" 
+  aria-expanded="false" 
+  aria-controls="advancedFilter">
+  Bộ lọc nâng cao
+</button>
+
+<div> 
+  <p>Tổng số học sinh: {{ students.paginator.count }}</p>
+  <p>Trang hiện tại: {{ students.number }} / {{ students.paginator.num_pages }}</p>
+</div>
+
+{% include "students/student_task_list/student_table.html" %}
+
+{% for student in students %}
+  {% include "students/modals/application_modal.html" with student=student %}
+  {% include "students/modals/payment_modal.html" with student=student %}
+{% endfor %}
+
+
+
+<div class="pagination">
+    {% if students.has_previous %} <!--là trang trước-->
+        <a href="?page={{ students.previous_page_number }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">« Trước</a>
+    {% endif %}
+    
+    <span>Trang {{ students.number }} / {{ students.paginator.num_pages }}</span>
+
+    {% if students.has_next %} <!--là trang sau-->
+        <a href="?page={{ students.next_page_number }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">Sau »</a>
+    {% endif %}
+</div>
+
+{% endblock %}

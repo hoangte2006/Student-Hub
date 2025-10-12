@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'students/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}   
+  <h2>Dashboard</h2>
+  <p>Tổng số học sinh: {{ total_students }}</p>
+  <p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+
+  <h3>Phân bố học lực</h3>
+  <ul>
+    {% for item in academic_status %}
+      <li>{{ item.academic }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+  </ul>
+
+  <div class="chart-container">
+    <canvas id="academicChart"></canvas> 
+  </div>
+
+  <h3>Phân bố giới tính</h3>
+  <ul>
+    {% for item in gender_status %}
+      <li>{{ item.gender }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+  </ul>
+
+  <div class="chart-container">
+  <canvas id="genderChart" width="400" height="400"></canvas>
+  </div>
+  
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    const academicData = {
+      labels: [{% for item in academic_status %}'{{ item.academic }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+      counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+    };
+
+    const genderData = {
+      labels: [{% for item in gender_status %}'{{ item.gender }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+      counts: [{% for item in gender_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+    };
+  </script>
+
+  <script src="{% static 'students/js/dashboard.js' %}"></script>
+{% endblock %}

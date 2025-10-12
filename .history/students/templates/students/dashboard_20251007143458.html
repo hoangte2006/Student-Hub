@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'students/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}   
+  <h2>Dashboard</h2>
+    
+  <h3>Thống kê học lực theo lớp</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Lớp</th>
+        <th>Giỏi</th>
+        <th>Khá</th>
+        <th>Trung bình</th>
+        <th>Yếu</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cls, levels in class_academic_map.items %}
+        <tr>
+          <td>{{ cls }}</td>
+          <td>{{ levels.G|default:0 }}</td>
+          <td>{{ levels.K|default:0 }}</td>
+          <td>{{ levels.TB|default:0 }}</td>
+          <td>{{ levels.Y|default:0 }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  <h3>Thống kê theo lớp</h3>
+
+  <ul class="class-list">
+    {% for class in class_counts %}
+      <li>Lớp {{ class.classroom }}: {{ class.count }} học sinh</li>
+    {% endfor %}
+  </ul>
+
+<div class="chart-grid">
+    
+    <div class="chart-block">
+        <h3>Phân bố học lực</h3>
+        
+        <div class="chart-container">
+            <canvas id="academicChart"></canvas> 
+        </div>
+
+        <ul class="study_status-list">
+            {% for item in academic_status %}
+              <li>{{ item.academic }}: {{ item.count }} học sinh</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="chart-block">
+        <h3>Phân bố giới tính</h3>
+        
+        <div class="chart-container">
+            <canvas id="genderChart"></canvas>
+        </div>
+        
+        <ul class="study_status-list">
+            {% for item in gender_status %}
+              <li>{{ item.gender }}: {{ item.count }} học sinh</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    const academicData = {
+      labels: [{% for item in academic_status %}'{{ item.academic }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+      counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+    };
+
+    const genderData = {
+      labels: [{% for item in gender_status %}'{{ item.gender }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+      counts: [{% for item in gender_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+    };
+  </script>
+
+  <script>
+    const labels = [{% for cls in class_academic_map.keys %}'{{ cls }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+
+    const dataG = [{% for levels in class_academic_map.values %}{{ levels.G|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    const dataK = [{% for levels in class_academic_map.values %}{{ levels.K|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    const dataTB = [{% for levels in class_academic_map.values %}{{ levels.TB|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    const dataY = [{% for levels in class_academic_map.values %}{{ levels.Y|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+
+    const ctx = document.getElementById('classAcademicChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'Giỏi', data: dataG, backgroundColor: '#28a745' },
+          { label: 'Khá', data: dataK, backgroundColor: '#007bff' },
+          { label: 'Trung bình', data: dataTB, backgroundColor: '#ffc107' },
+          { label: 'Yếu', data: dataY, backgroundColor: '#dc3545' },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: { display: true, text: 'Phân bố học lực theo lớp' }
+        }
+      }
+    });
+  </script>
+
+
+  <script src="{% static 'students/js/dashboard.js' %}"></script>
+{% endblock %}

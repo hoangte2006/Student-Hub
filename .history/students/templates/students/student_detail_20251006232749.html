@@ -1,0 +1,10 @@
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'age', 'classroom', 'gender', 'status', 'academic', 'score', 'email', 'birthday']
+        widgets = {
+            'gender': forms.Select(choices=Student.GENDER_CHOICES),
+            'status': forms.Select(choices=Student.STATUS_CHOICES),
+            'academic': forms.Select(choices=Student.ACADEMIC_CHOICES),
+            'birthday': forms.DateInput(attrs={'type': 'date'}),
+        }

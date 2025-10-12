@@ -1,0 +1,74 @@
+<form method="get" class="row g-3">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="advancedFilter">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Bộ lọc nâng cao</h5>
+    <!-- Cú pháp của button như sau:
+      data-bs-dismiss="offcanvas" chức năng của nó là đóng offcanvas, offcanvas là phần tử chứa nội dung cần ẩn 
+      -->
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button> 
+  </div>
+  <div class="offcanvas-body">
+    <form method="get" class="row g-3">
+      <!-- Các trường lọc nâng cao -->
+      <div class="col-md-6">
+        <label for="academic" class="form-label">Học lực</label>
+        <select name="academic" class="form-select">
+          <!--Lệnh option trong HTML -->
+          <option value="">-- Chọn --</option>
+          <option value="Giỏi" {% if filters.academic == 'Giỏi' %}selected{% endif %}>Giỏi</option>
+          <option value="Khá" {% if filters.academic == 'Khá' %}selected{% endif %}>Khá</option>
+          <option value="Trung bình" {% if filters.academic == 'Trung bình' %}selected{% endif %}>Trung bình</option>
+          <option value="Yếu" {% if filters.academic == 'Yếu' %}selected{% endif %}>Yếu</option>
+        </select>
+      </div>
+
+        <div class="col-md-6">
+            <label for="study_status" class="form-label">Trạng thái học tập</label>
+            <select name="study_status" class="form-select">
+            <option value="">-- Chọn --</option>
+            <option value="Đang học" {% if filters.study_status == 'Đang học' %}selected{% endif %}>Đang học</option>
+            <option value="Đã nghỉ" {% if filters.study_status == 'Đã nghỉ' %}selected{% endif %}>Đã nghỉ</option>
+            <option value="Đã tốt nghiệp" {% if filters.study_status == 'Đã tốt nghiệp' %}selected{% endif %}>Đã tốt nghiệp</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="payment_status" class="form-label">Trạng thái thanh toán</label>
+            <select name="payment_status" class="form-select">
+            <option value="">-- Chọn --</option>
+            <option value="Chưa thanh toán" {% if filters.payment_status == 'Chưa thanh toán' %}selected{% endif %}>Chưa thanh toán</option>
+            <option value="Đã thanh toán một phần" {% if filters.payment_status == 'Đã thanh toán một phần' %}selected{% endif %}>Đã thanh toán một phần</option>
+            <option value="Đã thanh toán đầy đủ" {% if filters.payment_status == 'Đã thanh toán đầy đủ' %}selected{% endif %}>Đã thanh toán đầy đủ</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="address" class="form-label">Địa chỉ</label>
+            <input type="text" name="address" class="form-control" value="{{ filters.address|default_if_none:'' }}" placeholder="Nhập địa chỉ">
+        </div>
+        <div class="col-md-6">
+            <label for="min_amount_paid" class="form-label">Số tiền đã đóng (Từ)</label>
+            <input type="number" name="min_amount_paid" class="form-control" value="{{ filters.min_amount_paid|default_if_none:'' }}" placeholder="Từ số tiền">
+        </div>
+        <div class="col-md-6">
+            <label for="max_amount_paid" class="form-label">Số tiền đã đóng (Đến)</label>
+            <input type="number" name="max_amount_paid" class="form-control" value="{{ filters.max_amount_paid|default_if_none:'' }}" placeholder="Đến số tiền">
+        </div>
+        <div class="col-md-6">
+            <label for="application_status" class="form-label">Trạng thái hồ sơ</label>
+            <select name="application_status" class="form-select">
+            <option value="">-- Chọn --</option>
+            <option value="Đang xử lý" {% if filters.application_status == 'Đang xử lý' %}selected{% endif %}>Đang xử lý</option>
+            <option value="Đã chấp nhận" {% if filters.application_status == 'Đã chấp nhận' %}selected{% endif %}>Đã chấp nhận</option>
+            <option value="Đã từ chối" {% if filters.application_status == 'Đã từ chối' %}selected{% endif %}>Đã từ chối</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Áp dụng bộ lọc</button>
+        </div>
+        <div class="col-12">
+            <a href="{% url 'student_list' %}" class="btn btn-secondary w-100">Xóa bộ lọc</a>
+        </div>
+    </form>
+  </div>
+</div>
+</form>

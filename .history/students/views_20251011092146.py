@@ -1,0 +1,359 @@
+from ast import keyword
+from multiprocessing import context
+from pyexpat.errors import messages
+from urllib import request
+from warnings import filters
+from django import forms
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Student
+from django.db.models import Avg    
+from django.contrib import messages 
+from datetime import datetime
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Count
+from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView
+from django.views.generic import DetailView
+from .forms import StudentForm
+
+# Create your views here.
+
+class StudentDetailView(DetailView):
+    model = Student
+    template_name = 'students/student_detail.html'
+
+''''
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'age', 'classroom', 'gender', 'study_status', 'academic', 'score', 'email', 'birthday']
+        widgets = {
+            'gender': forms.Select(choices=Student.GENDER_CHOICES),
+            'study_status': forms.Select(choices=Student.STATUS_CHOICES),
+            'academic': forms.Select(choices=Student.ACADEMIC_CHOICES),
+            'birthday': forms.DateInput(attrs={'type': 'date'}),
+        }
+'''
+
+def home(request):
+    return render(request, 'students/home.html')
+
+#@login_required
+def student_list(request):  
+    # 1. Khai báo và gán giá trị cho từng biến lọc
+    # Lấy giá trị từ request.GET và gán cho các biến riêng lẻ.
+    keyword = request.GET.get('keyword', '').strip()  # Loại bỏ khoảng trắng thừa
+    classroom = request.GET.get('classroom', '').strip()
+    gender = request.GET.get('gender', '').strip()
+    study_status = request.GET.get('study_status', '').strip()
+    academic = request.GET.get('academic', '').strip()
+    min_score = request.GET.get('min_score', '').strip()
+    max_score = request.GET.get('max_score', '').strip()
+    address = request.GET.get('address', '').strip()
+    phone = request.GET.get('phone', '').strip()
+    application_status = request.GET.get('application_status', '').strip()
+    application_date = request.GET.get('application_date', '').strip()
+    application_note = request.GET.get('application_note', '').strip()  
+    payment_status = request.GET.get('payment_status', '').strip()
+    payment_date = request.GET.get('payment_date', '').strip()
+    payment_note = request.GET.get('payment_note', '').strip()
+    amount_paid = request.GET.get('amount_paid', '').strip()
+
+    # 2. Tập hợp các giá trị lọc vào dictionary 'filters'
+    filters = {
+        'keyword': keyword,
+        'classroom': classroom,
+        'gender': gender,
+        'academic': academic,
+        'min_score': min_score,
+        'max_score': max_score,
+        'study_status': study_status,
+    }
+
+    # Lấy thông tin học sinh vừa xóa để hiển thị thông báo "Hoàn tác"
+    deleted_student = request.session.get('deleted_student')
+
+    # 3. Áp dụng bộ lọc
+    # Bắt đầu với tất cả học sinh chưa bị xóa
+    students = Student.objects.filter(is_deleted=False)
+    
+    if filters['keyword']:
+        students = students.filter(name__icontains=filters['keyword'])
+    if filters['classroom']:
+        students = students.filter(classroom__icontains=filters['classroom'])
+    if filters['gender']:
+        students = students.filter(gender=filters['gender'])
+    if filters['academic']:
+        students = students.filter(academic=filters['academic'])
+    if filters['study_status']:
+        students = students.filter(study_status=filters['study_status'])
+    if address:
+        students = students.filter(address__icontains=address)
+    if phone:
+        students = students.filter(phone__icontains=phone)
+    if application_status:
+        students = students.filter(application_status=application_status)
+    if application_date:
+        students = students.filter(application_date=application_date)
+    if payment_status:
+        students = students.filter(payment_status=payment_status)
+    if payment_date:
+        students = students.filter(payment_date=payment_date)
+    if payment_note:
+        students = students.filter(payment_note__icontains=payment_note)
+    if amount_paid:
+        try:
+            if application_date:
+                date_obj = datetime.strptime(application_date, '%Y-%m-%d').date()
+                students = students.filter(application_date=date_obj)
+        except ValueError:
+            pass
+
+        try:
+            if payment_date:
+                date_obj = datetime.strptime(payment_date, '%Y-%m-%d').date()
+                students = students.filter(payment_date=date_obj)
+        except ValueError:
+            pass
+
+    # Xử lý điểm số: cần dùng try-except để đảm bảo chuyển đổi sang float không bị lỗi
+try:
+    if min_amount_paid:
+        students = students.filter(amount_paid__gte=float(min_amount_paid))
+    if max_amount_paid:
+        students = students.filter(amount_paid__lte=float(max_amount_paid))
+except ValueError:
+    pass
+
+filters['min_amount_paid'] = min_amount_paid
+filters['max_amount_paid'] = max_amount_paid
+    paginator = Paginator(students, 20) # Hiển thị 20 học sinh trên mỗi trang
+    page_number = request.GET.get('page')
+    students = paginator.get_page(page_number)
+
+    filters = {
+        'keyword': keyword,
+        'classroom': classroom,
+        'gender': gender,
+        'academic': academic,
+        'min_score': min_score,
+        'max_score': max_score,
+        'study_status': study_status,
+        'address': address,
+        'phone': phone,
+        'application_status': application_status,
+        'application_date': application_date,
+        'application_note': application_note,
+        'payment_status': payment_status,
+        'payment_date': payment_date,
+        'payment_note': payment_note,
+        'amount_paid': amount_paid,
+    }
+
+
+    # 4. Trả về kết quả
+    return render(request, 'students/student_list.html',{
+        'students': students, 
+        'filters': filters,
+        'deleted_student': deleted_student,
+
+        'form': StudentForm(),
+    })
+                  
+def add_student(request):
+    form = StudentForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('student_list')
+
+    # Debug: in ra danh sách trường để chắc chắn
+    print("🧪 Form fields:", list(form.fields.keys()))
+
+    return render(request, 'students/add_student.html', {'form': form})
+
+
+def student_detail(request, student_id):
+    # Lấy đối tượng Student theo ID hoặc trả về lỗi 404
+    student = get_object_or_404(Student, id=student_id) 
+
+    # SỬA LỖI: Dùng 'classroom' thay vì 'class_name'
+    class_stats_raw = Student.objects.filter(is_deleted=False).values('classroom').annotate(
+        count=Count('id'),
+        avg_score=Avg('score')
+    )
+
+    class_stats = [
+        {
+            # SỬA LỖI: Dùng 'classroom' để truy cập giá trị
+            'class_name': item['classroom'], 
+            'count': item['count'],
+            'avg_score': round(item['avg_score'], 2) if item['avg_score'] is not None else 0
+        }
+        for item in class_stats_raw
+    ]
+
+    return render(request, 'students/student_detail.html', {
+        'student': student, 
+        'class_stats': class_stats
+    })
+
+# Hàm xử lý chỉnh sửa thông tin học sinh
+def edit_student(request, student_id): # 
+        student = get_object_or_404(Student, id=student_id) # Lấy đối tượng Student theo ID hoặc trả về lỗi 404 nếu không tìm thấy
+        if request.method == 'POST': # Nếu biểu mẫu được gửi đi
+            form = StudentForm(request.POST, instance=student) # instance=student để cập nhật đối tượng hiện có
+            if form.is_valid(): # Kiểm tra tính hợp lệ của dữ liệu biểu mẫu
+                form.save()
+                return redirect('student_list') # Chuyển hướng về danh sách học sinh sau khi lưu
+        else: # Nếu yêu cầu là GET, hiển thị biểu mẫu với dữ liệu hiện có
+            form = StudentForm(instance=student) # Tạo biểu mẫu với dữ liệu hiện có của học sinh
+        return render(request, 'students/edit_student.html', {'form': form, 'student': student}) # Truyền biểu mẫu và đối tượng học sinh vào ngữ cảnh để hiển thị trong template
+
+def delete_student(request, student_id):
+    student = get_object_or_404(Student, id=student_id) # Lấy đối tượng Student theo ID hoặc trả về lỗi 404 nếu không tìm thấy
+
+    # Lưu thông tin vào session để có thể khôi phục lại nếu cần (undo) 
+    # session là một dict lưu trữ dữ liệu tạm thời cho từng người dùng trong Django
+    request.session['deleted_student'] = { # Lưu thông tin học sinh đã xoá vào session 
+        'name': student.name,  # Lưu tất cả các trường cần thiết để khôi phục
+        'age': student.age,
+        'classroom': student.classroom,
+        'gender': student.gender,
+        'study_status': student.study_status,
+        'score': student.score,
+        'email': student.email,
+        'birthday': str(student.birthday),  # chuyển về chuỗi để lưu vào session 
+    }
+    student.is_deleted = True  # Đánh dấu học sinh là đã bị xoá
+    student.save()
+    messages.warning(request, f'Đã chuyển học sinh {student.name} vào thùng rác.')
+    return redirect('student_list')
+
+#    return render(request, 'students/delete_student.html', {'student': student})
+
+@require_POST  # Chỉ cho phép phương thức POST gọi hàm này, tránh việc người dùng truy cập trực tiếp qua URL
+def undo_delete(request):  #
+    data = request.session.get('deleted_student') # Lấy dữ liệu học sinh đã xoá từ session 
+
+    if not data: # Nếu không có dữ liệu trong session, hiển thị thông báo lỗi và chuyển hướng về danh sách học sinh
+        messages.error(request, 'Không tìm thấy dữ liệu học sinh để khôi phục.')
+        return redirect('student_list') 
+
+    try: # Thử khôi phục học sinh từ dữ liệu trong session
+        # Chuyển đổi dữ liệu ngày tháng từ chuỗi sang đối tượng date
+        # Chuyển birthday từ chuỗi sang kiểu ngày
+        birthday_str = data.get('birthday') # Lấy chuỗi ngày tháng từ dữ liệu
+        # Chuyển đổi chuỗi sang đối tượng date, kiểm tra nếu không phải 'None' trước khi chuyển đổi 
+        if birthday_str and birthday_str != 'None':
+            data['birthday'] = datetime.strptime(birthday_str, '%Y-%m-%d').date() # Chuyển đổi chuỗi sang đối tượng date 
+        else:
+            data['birthday'] = None  # hoặc dùng ngày mặc định nếu cần
+
+        # Tạo lại học sinh
+        Student.objects.create(
+            name=data.get('name'), # Lưu tên học sinh 
+            age=data.get('age'), 
+            classroom=data.get('classroom'),
+            gender=data.get('gender'),
+            study_status=data.get('study_status'),
+            score=data.get('score'),
+            email=data.get('email'),
+            birthday=data.get('birthday')
+        )
+
+        # Xoá dữ liệu khỏi session
+        request.session.pop('deleted_student', None) # Xoá khỏi session sau khi khôi phục thành công
+         # Hiển thị thông báo thành công
+        messages.success(request, f'Đã khôi phục học sinh {data.get("name")} thành công.')
+
+    except Exception as e: # Nếu có lỗi xảy ra trong quá trình khôi phục, hiển thị thông báo lỗi
+        messages.error(request, f'Lỗi khi khôi phục: {str(e)}')
+
+    return redirect('student_list')
+
+def trash_list(request):
+    deleted_students = Student.objects.filter(is_deleted=True)
+    return render(request, 'students/trash_list.html', {'deleted_students': deleted_students}) # Truyền danh sách học sinh đã xoá vào ngữ cảnh để hiển thị trong template
+
+def restore_student(request, student_id):
+    student = get_object_or_404(Student, id=student_id, is_deleted=True) # Lấy đối tượng Student theo ID hoặc trả về lỗi 404 nếu không tìm thấy
+    student.is_deleted = False  # Đánh dấu học sinh là chưa bị xoá
+    student.save() # Lưu thay đổi vào cơ sở dữ liệu
+    messages.success(request, f'Đã khôi phục học sinh {student.name} thành công.')
+    return redirect('trash_list') 
+
+def delete_forever(request, student_id):
+    student = get_object_or_404(Student, id=student_id, is_deleted=True) # Lấy đối tượng Student theo ID hoặc trả về lỗi 404 nếu không tìm thấy
+    student.delete() # Xoá học sinh khỏi cơ sở dữ liệu
+    messages.success(request, f'Đã xoá vĩnh viễn học sinh {student.name}.')
+    return redirect('trash_list') # Chuyển hướng về danh sách thùng rác 
+
+def dashboard(request):
+    academic_status_raw = Student.objects.filter(is_deleted=False).values('academic').annotate(count=Count('id')) # Đếm số học sinh theo từng loại học lực
+     # Chuyển đổi mã học lực thành nhãn hiển thị
+    academic_status = [ # Chuyển đổi mã học lực thành nhãn hiển thị 
+        {
+            'academic': Student.ACADEMIC_LABELS.get(item['academic'], 'Không rõ'), # Lấy nhãn hiển thị từ từ điển ACADEMIC_LABELS, nếu không tìm thấy thì hiển thị 'Không rõ' 
+            'count': item['count']
+        } for item in academic_status_raw # Chuyển mã học lực sang nhãn dễ hiểu hơn và đếm số lượng, cụ thể là dùng dict ACADEMIC_LABELS trong models.py
+        # Dòng for này tương đương với: 
+        # academic_data = []
+        # for i in academic_raw:
+        #     label = Student.ACADEMIC_LABELS.get(i['academic'], 'Không rõ')
+        #     count = i['count']
+        #     academic_data.append({'label': label, 'count': count})
+    ]
+
+    # Biểu đồ giới tính
+    gender_status_raw = Student.objects.filter(is_deleted=False).values('gender').annotate(count=Count('id'))
+    gender_status = [
+        {
+            'gender': Student.GENDER_LABELS.get(item['gender'], 'Khác'),
+            'count': item['count']
+        } for item in gender_status_raw
+    ]
+
+    total_students = Student.objects.count()
+    avg_score = Student.objects.aggregate(Avg('score'))['score__avg']
+
+    acasemic_by_class = (
+        Student.objects
+        .filter(is_deleted=False) # Chỉ lấy học sinh chưa bị xoá
+        .values('classroom', 'academic') # Nhóm theo lớp và học lực
+        .annotate(count=Count('id')) # Đếm số học sinh trong mỗi nhóm
+        .order_by('classroom', 'academic') # `Sắp xếp kết quả theo lớp và học lực
+    )
+
+    # Gom dữ liệu thành dict
+    class_academic_map  = {}
+    for item in acasemic_by_class: # Duyệt qua từng mục trong danh sách đã truy vấn
+        class_name = item['classroom'] # Lấy tên lớp
+        academic = item['academic'] # Lấy nhãn học lực
+        count = item['count'] # Lấy số lượng học sinh trong nhóm
+
+        if class_name not in class_academic_map:
+            class_academic_map[class_name] = {'G': 0, 'K': 0, 'TB': 0, 'Y': 0}
+        if academic in ['G', 'K', 'TB', 'Y']:
+            class_academic_map[class_name][academic] = count
+
+    class_list = (
+        Student.objects
+        .filter(is_deleted=False, academic__isnull=False)
+        .values_list('classroom', flat=True)
+        .distinct()        
+        .order_by('classroom')
+    )
+        
+    context = {
+        'class_academic_map': class_academic_map,
+        'class_list': class_list,
+        'total_students': total_students,
+        'avg_score': avg_score,
+        'academic_status': academic_status,
+        'gender_status': gender_status,
+    }
+
+    return render(request, 'students/dashboard.html', context)

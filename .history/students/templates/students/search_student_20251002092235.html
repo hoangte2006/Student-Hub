@@ -1,0 +1,10 @@
+<h1>Tìm kiếm thông tin học sinh</h1>
+<ul>
+    {% for student in students %}
+        <li>
+            <a href="{% url 'student_detail' student.id %}">{{ student.name }}</a>
+            - <a href="{% url 'edit_student' student.id %}">Sửa</a>
+            - <a href="{% url 'delete_student' student.id %}">Xóa</a>
+        </li>
+    {% endfor %}
+</ul>

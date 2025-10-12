@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Chi tiết học sinh: {{ object.name }}</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>Họ và tên</th>
+            <td>{{ object.name }}</td>
+        </tr>
+        <tr>
+            <th>Tuổi</th>
+            <td>{{ object.age }}</td>
+        </tr>
+        <tr>
+            <th>Lớp học</th>
+            <td>{{ object.classroom }}</td>
+        </tr>
+        <tr>
+            <th>Giới tính</th>
+            <td>{{ object.get_gender_display }}</td>
+
+
+    <a href="{% url 'edit_student' object.id %}" class="btn btn-warning">
+    Sửa thông tin
+    </a>
+    
+    <a href="{% url 'delete_student' object.id %}" 
+    class="btn btn-danger"
+    onclick="return confirm('Bạn có chắc chắn muốn XÓA vĩnh viễn học sinh {{ object.name }} không?');">
+        Xoá học sinh
+    </a>
+    
+    <a href="{% url 'student_list' %}" class="btn btn-secondary">Quay lại danh sách học sinh</a>
+
+{% endblock %}
+

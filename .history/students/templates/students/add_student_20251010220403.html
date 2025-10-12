@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Thêm học sinh{% endblock %}
+
+{% block content %}
+  <h2>Thêm học sinh mới</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class=" ">Lưu</button>
+  </form>
+  <div class="mt-3">
+    <a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>
+  </div>  
+
+{% endblock %}

@@ -1,0 +1,34 @@
+.sidebar {
+  width: 60px; /* Chiều rộng mặc định */
+  min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao cửa sổ */
+  transition: width 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+  overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+  position: fixed; /* Cố định sidebar */
+  top: 0; /* Đặt ở trên cùng */
+  left: 0;       /* Đặt ở bên trái */
+  z-index: 1000; /* Đảm bảo sidebar nằm trên cùng */
+  
+}
+
+.sidebar:hover { /* Mở rộng khi hover */
+  width: 220px; /* Chiều rộng khi hover */
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .menu-text {
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar:hover .menu-text {
+  opacity: 1;
+}

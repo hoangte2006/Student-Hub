@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+
+<h1> Chào mừng đến với Student Hub</h1>
+<p>Quản lý học sinh dễ dàng và hiệu quả.</p>
+
+<ul>
+  <a href="{% url 'student_list' %}">📋 Danh sách học sinh</a></li>
+  <li><a href="{% url 'dashboard' %}">📊 Dashboard</a></li>
+  <li><a href="{% url 'add_student' %}">➕ Thêm học sinh</a></li>
+</ul>
+{% endblock %}

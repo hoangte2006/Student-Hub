@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Danh sách học sinh{% endblock %}
+  File "/home/hoangte/Documents/Code/ProJect/Student_Hub/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hoangte/Documents/Code/ProJect/Student_Hub/venv/lib/python3.12/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/hoangte/Documents/Code/ProJect/Student_Hub/venv/lib/python3.12/site-packages/django/template/base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 6: 'static', expected 'endblock'. Did you forget to register or load this tag?
+[10/Oct/2025 07:37:32] "GET /students/ HTTP/1.1" 500 207789
+
+{% block styles %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'students/css/student_table.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>Danh sách học sinh</h1>
+<p>Trang đang hoạt động</p>
+
+
+{% include "students/student_task_list/deleted_alert.html" %}
+{% include "students/student_task_list/filter_form.html" %}
+
+<a href="{% url 'add_student' %}" class="btn btn-primary">Thêm học sinh mới</a>
+<a href="{% url 'trash_list' %}" class="btn btn-outline-danger">Thùng rác</a>
+
+{% include "students/student_task_list/student_table.html" %}
+
+<div class="pagination">
+    {% if students.has_previous %} <!--là trang trước-->
+        <a href="?page={{ students.previous_page_number }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">« Trước</a>
+    {% endif %}
+    
+    <span>Trang {{ students.number }} / {{ students.paginator.num_pages }}</span>
+
+    {% if students.has_next %} <!--là trang sau-->
+        <a href="?page={{ students.next_page_number }}{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">Sau »</a>
+    {% endif %}
+</div>
+
+{% endblock %}

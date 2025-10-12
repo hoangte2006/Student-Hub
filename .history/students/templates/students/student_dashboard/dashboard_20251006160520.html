@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {{ total_students }}</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+
+<h3>Phân bố học lực</h3>
+<ul>
+    {% for item in academic_status %}
+        <li>{{ item.academic_status }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+</ul>
+
+<script>
+  const academicData = {
+    // SỬA TÊN TRƯỜNG TỪ 'academic' thành 'academic_status' để nhất quán
+    labels: [{% for item in academic_status %}'{{ item.academic_status }}',{% endfor %}], 
+    counts: [{% for item in academic_status %}{{ item.count }},{% endfor %}]
+  };
+  renderAcademicChart(academicData);
+</script>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+/* làm màu trang home */
+
+.dashboard-options {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.dashboard-option {
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.dashboard-option:hover {
+  background-color: #f0f0f0;
+}
+
+.dashboard-option .icon {
+  font-size: 24px;
+}
+
+.dashboard-option .label {
+  font-size: 14px;
+  margin-top: 4px;
+}
+/* Kết thúc làm đẹp trang home */   
+
+.icon {
+  font-size: 24px;
+  margin-right: 8px;
+}   
+
+.menu-text {
+  display: inline; /* Hiển thị văn bản menu */
+}
+
+.l

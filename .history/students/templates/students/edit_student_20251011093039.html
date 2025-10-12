@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Sửa học sinh{% endblock %}
+
+{% block content %}
+
+<h2>Sửa học sinh: {{ student.name }}</h2>
+<!-- Tạo bảng edit hợp lý chi tiết -->
+
+<form method="post" class="row g-3">    
+    {% csrf_token %}
+    
+    <div class="col-md-6">
+        {{ form.name.label_tag }} {{ form.name }}
+    </div>
+    <div class="col-md-3">
+        {{ form.age.label_tag }} {{ form.age }}
+    </div>
+    <div class="col-md-3">
+        {{ form.classroom.label_tag }} {{ form.classroom }}
+    </div>
+    
+    <div class="col-md-4">
+        {{ form
+</form>
+
+<a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>
+{% endblock %}

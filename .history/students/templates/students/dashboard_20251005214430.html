@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {
+    }</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+<a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>
+{% endblock     %}

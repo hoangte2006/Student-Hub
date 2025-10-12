@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {{ total_students }}</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+
+<h3>Phân bố học lực</h3>
+<ul>
+    {% for item in academic_status %}
+        <li>{{ item.academic_status }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+</ul>
+
+{% load static %}
+<canvas id="academicChart" width="400" height="400"></canvas>
+
+<!-- Phần này thường được đặt trong <head> hoặc footer của base.html -->
+{% block scripts %}
+<script>
+  // Dữ liệu biểu đồ được tạo ra ở đây
+  const academicData = {
+    labels: [{% for item in academic_status %}'{{ item.academic_status }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+</script>
+
+
+<!-- Tùy chọn: Gọi hàm nếu dashboard.js không tự động chạy khi tải xong -->
+<script>
+  // Sau khi cả dữ liệu và file JS được tải, chúng ta gọi hàm vẽ biểu đồ.
+  // Điều này đảm bảo hàm renderAcademicChart(academicData) được gọi SAU khi nó được định nghĩa.
+  if (typeof renderAcademicChart === 'function') {
+      renderAcademicChart(academicData);
+  }
+</script>
+
+{% endblock scripts %}
+
+{% endblock content %}

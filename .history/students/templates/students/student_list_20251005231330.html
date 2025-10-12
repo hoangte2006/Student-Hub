@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Danh sách học sinh{% endblock %}
+{% block content %}
+
+<h1>Danh sách học sinh</h1>
+<p>Trang đang hoạt động</p>
+
+{% include "students/student_/deleted_alert.html" %}
+{% include "students/filter_form.html" %}
+{% include "students/student_table.html" %}
+
+<a href="{% url 'add_student' %}" class="btn btn-primary">Thêm học sinh mới</a>
+<a href="{% url 'trash_list' %}" class="btn btn-outline-danger">Thùng rác</a>
+
+{% endblock %}

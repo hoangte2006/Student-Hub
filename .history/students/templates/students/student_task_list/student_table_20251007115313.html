@@ -1,0 +1,80 @@
+{# student_table.html - Có hiệu ứng màu sắc phù hợp #}
+
+{% load static %}
+
+{% if students %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên</th>
+          <th>Lớp</th>
+          <th>Giới tính</th>
+          <th>Học lực</th>
+          <th>Trạng thái</th>
+          <th>Điểm</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for student in students %}
+            <tr>
+              <td>{{ forloop.counter0|add:students.start_index }}</td>
+              <td>
+                <a href="{% url 'student_detail' student.id %}" class="text-dark text-decoration-none">
+                  {{ student.name }} 
+                  <span class="ms-1" style="font-size: 0.8em;">&uarr;</span> 
+                </a>
+              </td>
+              <td>{{ student.classroom }}</td>
+              <td>{{ student.get_gender_display }}</td>
+              
+<td>
+  {% if student.status %}
+    <span class="badge 
+      {% if student.status == 'A' %}bg-success
+      {% elif student.status == 'N' %}bg-secondary
+      {% elif student.status == 'S' %}bg-primary
+      {% else %}bg-warning
+      {% endif %}
+    ">
+      {{ student.get_status_display }}
+    </span><br>
+  {% endif %}
+
+  {% if student.application_status %}
+    <span class="badge 
+      {% if student.application_status == 'pending' %}bg-warning
+      {% elif student.application_status == 'approved' %}bg-success
+      {% elif student.application_status == 'rejected' %}bg-danger
+      {% else %}bg-secondary
+      {% endif %}
+    ">
+      {{ student.get_application_status_display }}
+    </span><br>
+  {% endif %}
+
+  {% if student.payment_status %}
+    <span class="badge 
+      {% if student.payment_status == 'paid' %}bg-success
+      {% elif student.payment_status == 'unpaid' %}bg-danger
+      {% elif student.payment_status == 'partial' %}bg-warning
+      {% else %}bg-secondary
+      {% endif %}
+    ">
+      {{ student.get_payment_status_display }}
+    </span>
+  {% endif %}
+</td>
+                <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning">Sửa</a>
+                <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xoá học sinh này?');">Xoá</a>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}

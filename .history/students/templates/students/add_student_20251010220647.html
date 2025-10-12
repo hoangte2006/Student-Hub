@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm học sinh</title>
+</head>
+<body>
+  <h2>Thêm học sinh mới</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Lưu</button>
+  </form>
+</body>
+</html>

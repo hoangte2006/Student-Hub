@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {{ total_students }}</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+
+<h3>Phân bố học lực</h3>
+<ul>
+    {% for item in academic_status %}
+        <li>{{ item.academic_status }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+</ul>
+
+{% load static %}
+<canvas id="academicChart" width="400" height="400"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const academicData = {
+    labels: [{% for item in academic_status %}'{{ item.academic_status }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+  
+  // Chúng ta sẽ gọi hàm renderAcademicChart(academicData) sau khi dashboard.js được tải
+</script>
+
+<script src="{% static 'students/js/dashboard.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Danh sách học sinh{% endblock %}
+
+{% block content %}
+<form method="get">
+    <input type="text" name="q" class="btn btn-outline-info" placeholder="Tìm kiếm học sinh..." value="{{ request.GET.q }}">
+    <button type="submit" class="btn btn-outline-info">Tìm</button>
+</form>
+
+<h1>Danh sách học sinh</h1>
+<p>Trang đang hoạt động</p>
+
+{% if students %}
+  <ul>
+    <table class="table table-bordered table-striped"> # Bảng có viền và dòng kẻ
+      <thead>
+        <tr>
+          <th>Tên</th>
+          <th>Lớp</th>
+          <th>Giới tính</th>
+          <th>Học lực</th>
+          <th>Điểm</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+          <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.classroom }}</td>
+            <td>{{ student.get_gender_display }}</td>
+            <td>{{ student.get_status_display }}</td>
+            <td>{{ student.score }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </ul>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}
+
+<a href="{% url 'add_student' %}">Thêm học sinh mới</a>
+{% endblock %}

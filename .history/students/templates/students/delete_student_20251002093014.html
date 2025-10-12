@@ -1,0 +1,8 @@
+<h2> </h2>
+<p>Bạn có chắc muốn xoá học sinh "{{ student.name }}" không?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Xoá</button>
+    <a href="{% url 'student_list' %}">Hủy</a>
+</form>
+<a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}Danh sách học sinh{% endblock %}
+
+{% block content %}
+<!-- Form tìm kiếm và lọc học sinh -->
+<form method="get" class="row mb-4"> <!-- Sử dụng class row để tạo hàng -->
+  <div class="col-md-3"> `
+    <!-- Sử dụng class form-control để tạo kiểu cho ô input --> 
+<input type="text" name="classroom" value="{{ classroom|default_if_none:'' }}" class="form-control" placeholder="Lọc theo lớp"> <!--
+name="classroom": tên biến gửi lên
+value="{{ classroom|default_if_none:'' }}": giữ lại giá trị đã nhập nếu có
+class="form-control": thêm class CSS để tạo kiểu cho ô input
+placeholder="Lọc theo lớp": văn bản hiển thị khi ô trống -->  
+  </div>
+  <div class="col-md-3"> <!-- Sử dụng class col-md-3 để chia đều -->
+    <select name="gender" class="form-select"> 
+    <!-- name="gender": tên biến gửi lên
+    selected: nếu người dùng đã chọn giới tính, giữ lại lựa chọn đó -->
+      <option value="">-- Giới tính --</option> <!-- option đầu tiên để chọn tất cả -->
+      <option value="M" {% if gender == 'M' %}selected{% endif %}>Nam</option> <!-- option cho giới tính Nam -->
+      <option value="F" {% if gender == 'F' %}selected{% endif %}>Nữ</option>
+      <option value="O" {% if gender == 'O' %}selected{% endif %}>Khác</option>
+      <!--
+      <option>	Tạo một lựa chọn trong dropdown
+      value="F"	Giá trị được gửi lên server nếu người dùng chọn mục này
+      {% if gender == 'F' %}selected{% endif %}	Kiểm tra nếu người dùng đã chọn giới tính là "F" → đánh dấu là đã chọn
+      Nữ	Nội dung hiển thị cho người dùng -->
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select name="status" class="form-select"> <!-- Sử dụng class form-select để tạo kiểu cho ô select -->
+      <option value="">-- Học lực --</option>
+      <option value="G" {% if status == 'G' %}selected{% endif %}>Giỏi</option>
+      <option value="K" {% if status == 'K' %}selected{% endif %}>Khá</option>
+      <option value="T" {% if status == 'T' %}selected{% endif %}>Trung bình</option>
+      <option value="Y" {% if status == 'Y' %}selected{% endif %}>Yếu</option>
+    </select>
+  </div>
+
+  <div class="col">
+    <select name="status" class="form-select">
+      <option value="">-- Trạng thái --</option>
+      <option value="A" {% if status == 'A' %}selected{% endif %}>Đang học</option>
+      <option value="D" {% if status == 'D' %}selected{% endif %}>Đã nghỉ</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button> <!-- Sử dụng class w-100 để nút bấm rộng 100% -->
+  </div>
+</form>
+
+
+<h1>Danh sách học sinh</h1>
+<p>Trang đang hoạt động</p>
+
+{% if deleted_student %}
+  <div class="alert alert-warning d-flex justify-content-between align-items-center">
+    Đã xoá học sinh <strong>{{ deleted_student.name }}</strong>.
+    <form method="post" action="{% url 'undo_delete' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm btn-outline-dark">Hoàn tác</button>
+    </form>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      document.querySelector('.alert').style.display = 'none';
+    }, 3000);
+  </script>
+{% endif %}
+
+
+{% if students %}
+  <ul>
+    <!-- Sử dụng bảng để hiển thị danh sách học sinh 
+      Tạo bảng có viền (bordered) và màu xen kẽ từng dòng (striped)
+      thead: phần đầu bảng, chứa tiêu đề các cột
+      tr: một dòng trong bảng
+      th: tiêu đề từng cột-->
+
+    <table class="table table-bordered table-striped">  
+      <thead>
+        <tr>
+          <th>Tên</th>
+          <th>Lớp</th>
+          <th>Giới tính</th>
+          <th>Học lực</th>
+          <th>Điểm</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+          <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.classroom }}</td>
+            <td>{{ student.get_gender_display }}</td>
+            <td>{{ student.get_status_display }}</td>
+            <td>{{ student.score }}</td>
+            <td>
+              <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning">Sửa</a> <!-- btn-sm: nút nhỏ, btn-warning: màu vàng -->
+              <a href="{% url 'delete_student' student.id %}"
+                class="btn btn-sm btn-danger"
+                onclick="return confirm('Bạn có chắc muốn xoá học sinh này?');">
+                Xoá
+              </a>
+           </td>
+          </tr>
+        {% endfor %}  
+      </tbody>
+  </ul>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}
+
+<a href="{% url 'add_student' %}" class="btn btn-primary">Thêm học sinh mới</a> 
+<a href="{% url 'trash_list' %}" class="btn btn-outline-danger">Thùng rác</a>
+
+{% endblock %}

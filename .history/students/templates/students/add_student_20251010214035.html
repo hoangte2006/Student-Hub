@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Thêm học sinh{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+
+
+  {{ form.name }}
+  {{ form.age }}
+  {{ form.classroom }}
+  {{ form.gender }}
+  {{ form.study_status }}
+  {{ form.academic }}
+  {{ form.score }}
+  {{ form.email }}
+  {{ form.birthday }}
+  {{ form.address }}
+  {{ form.phone }}
+  {{ form.application_status }}
+  {{ form.application_note }}
+  {{ form.application_date }}
+  {{ form.payment_status }}
+  {{ form.payment_note }}
+  {{ form.payment_date }}
+  {{ form.amount_paid }}
+
+  <button type="submit">Lưu</button>
+</form>
+
+
+{% endblock %}

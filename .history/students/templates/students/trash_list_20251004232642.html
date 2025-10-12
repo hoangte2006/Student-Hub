@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Thùng rác</h2>
+<table class="table"> <!-- Sử dụng lớp Bootstrap để tạo bảng đẹp hơn -->
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Lớp</th>
+            <th>Điểm</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in deleted_students %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.classroom }}</td>
+            <td>{{ student.score }}</td>
+            <td>
+                <form action="{% url 'restore_student' student.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-sm">Khôi phục</button>
+                </form>
+                <form action="{% url 'delete_forever' student.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Xoá vĩnh viễn</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Không có học sinh nào trong thùng rác.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+{% endblock %}

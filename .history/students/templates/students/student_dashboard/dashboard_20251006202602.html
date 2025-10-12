@@ -1,0 +1,60 @@
+<h3>Phân bố học lực</h3>
+<ul>
+  {% for item in academic_status %}
+    <li>{{ item.academic }}: {{ item.count }} học sinh</li>
+  {% endfor %}
+</ul>
+
+<canvas id="academicChart" width="400" height="400"></canvas>
+<script>
+  const academicData = {
+    labels: [{% for item in academic_status %}'{{ item.academic }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+  renderAcademicChart(academicData);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  function renderAcademicChart(data) {
+    const ctx = document.getElementById('academicChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Số lượng học sinh',   
+          data: data.counts,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      });
+  }
+</script>
+<h3>Phân bố hạnh kiểm</h3>
+<ul>
+  {% for item in conduct_status %}
+    <li>{{ item.conduct }}: {{ item.count }} học sinh</li>
+  {% endfor %}
+</ul>
+<canvas id="conductChart" width="400" height="400"></canvas>
+<script>
+  const conductData = {
+    labels: [{% for item in conduct_status %}'{{ item.conduct }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in conduct_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+  renderConductChart(conductData);
+</script>
+<script>
+  function renderConductChart(data) {
+    const ctx = document.getElementById('conductChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: { 

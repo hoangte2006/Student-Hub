@@ -1,0 +1,5 @@
+/* làm đẹp sidebar */
+.sidebar {
+  width: 60px; /* Chiều rộng thu gọn */
+  height: 100vh; /* Chiều cao toàn bộ viewport */
+  position: fixed; /* Cố định vị trí */ 

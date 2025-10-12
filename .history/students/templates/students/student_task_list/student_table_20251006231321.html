@@ -1,0 +1,91 @@
+{# student_table.html - Phiên bản tối ưu hóa #}
+
+{% load static %}
+
+{% if students %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên</th>
+          <th>Lớp</th>
+          <th>Giới tính</th>
+          <th>Học lực</th>
+          <th>Trạng thái</th>
+          <th>Điểm</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+          
+          {# TÍNH TOÁN CÁC CLASS CSS SỬ DỤNG THẺ {% with %} #}
+          {% with student.academic as academic_code %}
+            {% if academic_code == 'G' %}
+              {% with 'bg-success' as academic_badge_class %}
+              {% with 'text-success' as score_text_class %}
+            {% elif academic_code == 'K' %}
+              {% with 'bg-primary' as academic_badge_class %}
+              {% with 'text-primary' as score_text_class %}
+            {% elif academic_code == 'T' %}
+              {% with 'bg-warning' as academic_badge_class %}
+              {% with 'text-warning' as score_text_class %}
+            {% else %}
+              {% with 'bg-danger' as academic_badge_class %}
+              {% with 'text-danger' as score_text_class %}
+            {% endif %}
+
+            {% with student.status as status_code %}
+              {% if status_code == 'A' %}
+                {% with 'bg-success' as status_badge_class %}
+              {% elif status_code == 'N' %}
+                {% with 'bg-secondary' as status_badge_class %}
+              {% elif status_code == 'G' %}
+                {% with 'bg-primary' as status_badge_class %}
+              {% else %}
+                {% with 'bg-warning' as status_badge_class %}
+              {% endif %}
+            {% endwith %}
+          
+          <tr>
+            <td>{{ forloop.counter0|add:students.start_index }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.classroom }}</td>
+            <td>{{ student.get_gender_display }}</td>
+            
+            {# Học lực: Chỉ cần gọi biến đã tính toán #}
+            <td>
+              <span class="badge {{ academic_badge_class }}">
+                {{ student.get_academic_display }}
+              </span>
+            </td>
+            
+            {# Trạng thái: Chỉ cần gọi biến đã tính toán #}
+            <td>
+              <span class="badge {{ status_badge_class }}">
+                {{ student.get_status_display }}
+              </span>
+            </td>
+            
+            {# Điểm: Chỉ cần gọi biến đã tính toán #}
+            <td>
+              <span class="{{ score_text_class }}">
+                {{ student.score|floatformat:1 }}
+              </span>
+            </td>
+            
+            <td>
+              <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning">Sửa</a>
+              <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xoá học sinh này?');">Xoá</a>
+            </td>
+          </tr>
+          
+          {% endwith %} {# Kết thúc academic_code with #}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}

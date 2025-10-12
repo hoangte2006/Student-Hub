@@ -1,0 +1,41 @@
+<form method="get" class="row g-3">
+  <!-- Bộ lọc thường -->
+  <div class="col-md-3">
+    <input type="text" name="keyword" class="form-control" placeholder="Tìm theo tên..." value="{{ filters.keyword }}">
+  </div>
+
+  <div class="col-md-2">
+    <select name="gender" class="form-select">
+      <option value="">-- Giới tính --</option>
+      <option value="M" {% if filters.gender == 'M' %}selected{% endif %}>Nam</option>
+      <option value="F" {% if filters.gender == 'F' %}selected{% endif %}>Nữ</option>
+      <option value="O" {% if filters.gender == 'O' %}selected{% endif %}>Khác</option>
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Lọc</button>
+  </div>
+
+  <div class="col-md-2 text-end">
+    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#advancedFilter">
+      Bộ lọc nâng cao
+    </button>
+  </div>
+
+  <!-- Offcanvas nằm trong form -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="advancedFilter">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Bộ lọc nâng cao</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- Các trường lọc nâng cao -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="academic" class="form-label">Học lực</label>
+          <select name="academic" class="form-select">
+            <option value="">-- Chọn --</option>
+            <option value="Giỏi" {% if filters.academic == 'Giỏi' %}selected{% endif %}>Giỏi</option>
+            <option value="Khá" {% if filters.academic == 'Khá' %}selected{% endif %}>Khá</option>
+            <option value="Trung bình" {% if filters.academic == 'Trung bình' %}selected{% endif %}>

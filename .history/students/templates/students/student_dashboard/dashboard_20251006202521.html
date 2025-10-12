@@ -1,0 +1,15 @@
+<h3>Phân bố học lực</h3>
+<ul>
+  {% for item in academic_status %}
+    <li>{{ item.academic }}: {{ item.count }} học sinh</li>
+  {% endfor %}
+</ul>
+
+<canvas id="academicChart" width="400" height="400"></canvas>
+<script>
+  const academicData = {
+    labels: [{% for item in academic_status %}'{{ item.academic }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+  renderAcademicChart(academicData);
+</script>

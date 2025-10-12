@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Danh sách học sinh</title>
+</head>
+
+<body>
+    <h1>Danh sách học sinh</h1>
+    <ul>
+        {% for student in students %}
+            <li>
+                <a href="{% url 'student_detail' student.id %}">{{ student.name }}</a>
+                - <a href="{% url 'edit_student' student.id %}">Sửa</a>
+                
+            </li>
+        {% endfor %}
+        <a href="{% url 'add_student' %}">Thêm học sinh mới</a>
+
+    </ul>
+</body>
+
+</html>

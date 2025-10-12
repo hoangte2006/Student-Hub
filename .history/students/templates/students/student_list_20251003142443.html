@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Danh sách học sinh{% endblock %}
+
+{% block content %}
+<form method="get">
+    <input type="text" name="q" placeholder="Tìm theo tên..." value="{{ request.GET.q }}">
+    <button type="submit">Tìm</button>
+</form>
+
+<h1>Danh sách học sinh</h1>
+<p>Trang đang hoạt động.</p>
+
+{% if students %}
+  <ul>
+    {% for student in students %}
+      <li>
+        <a href="{% url 'student_detail' student.id %}">{{ student.name }}</a>
+        - <a href="{% url 'edit_student' student.id %}">Sửa</a>
+        - <a href="{% url 'delete_student' student.id %}">Xóa</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}
+
+<a href="{% url 'add_student' %}">Thêm học sinh mới</a>
+<a href="{% url 'dashboard'%}" >🔍 Xem Dashboard</a>
+{% endblock %}

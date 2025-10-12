@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Chi tiết học sinh: {{ object.name }}</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>Họ và tên</th>
+            <td>{{ object.name }}</td>
+        </tr>
+        <tr>
+            <th>Tuổi</th>
+            <td>{{ object.age }}</td>
+        </tr>
+        <tr>
+            <th>Lớp học</th>
+            <td>{{ object.classroom }}</td>
+        </tr>
+        <tr>
+            <th>Giới tính</th>
+            <td>{{ object.get_gender_display }}</td>
+        </tr>
+        <tr>
+            <th>Trạng thái học tập</th>
+            <td>{{ object.get_study_status_display }}</td>
+        </tr>
+        <tr>
+            <th>Học lực</th>
+            <td>{{ object.get_academic_display }}</td>
+        </tr>
+        <tr>
+            <th>Điểm số</th>
+            <td>{{ object.score }}</td> {# Hiển thị điểm số #}
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ object.email }}</td>
+        </tr>
+        <tr>
+            <th>Ngày sinh</th>
+            <td>{{ object.birthday }}</td>
+        </tr>           
+        <tr>
+            <th>Địa chỉ</th>
+            <td>{{ object.address }}</td>
+        </tr>
+        <tr>
+            <th>Số điện thoại</th>
+            <td>{{ object.phone }}</td>
+        </tr>
+        <tr>
+            <th>Số tiền đã đóng</th>
+            <td>{{ object.amount_paid }}</td>
+        </tr>
+        <tr>
+            <th>Ngày nộp hồ sơ</th>
+            <td>{{ object.application_date }}</td>
+        </tr>
+        <tr>
+            <th>Trạng thái hồ sơ</th>
+            <td>{{ object.get_application_status_display }}</td>
+        </tr>
+        <tr>
+            <th>Ngày thanh toán</th>
+            <td>{{ object.payment_date }}</td>
+        </tr>
+        <tr>
+            <th>Trạng thái thanh toán</th>
+            <td>{{ object.get_payment_status_display }}</td>
+        </tr>
+    </table>
+
+    <a href="{% url 'edit_student' object.id %}" class="btn btn-warning">
+    Sửa thông tin
+    </a>
+    
+    <a href="{% url 'delete_student' object.id %}" 
+    class="btn btn-danger"
+    onclick="return confirm('Bạn có chắc chắn muốn XÓA vĩnh viễn học sinh {{ object.name }} không?');">
+        Xoá học sinh
+    </a>
+    
+    <a href="{% url 'student_list' %}" class="btn btn-secondary">Quay lại danh sách học sinh</a>
+
+{% endblock %}
+

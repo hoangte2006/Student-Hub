@@ -1,0 +1,46 @@
+.badge.btn {
+  cursor: pointer;
+  padding: 0.5em 0.75em;
+  font-size: 0.85em;
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.badge.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;   
+    color: white;
+}
+
+.modal-body p {
+    margin: 0.5rem 0;
+    font-size: 0.95em;
+}
+
+[data-bs-toggle="tooltip"] {
+  cursor: help;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.modal-footer .btn {
+    min-width: 100px;
+}
+
+.modal-fade {
+    transition: transform 0.3s ease-out;
+    transform: translateY(-20px);
+}
+
+.modal-fade.show {
+    transform: translateY(0);
+}

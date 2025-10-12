@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Danh sách học sinh</title>
+</head>
+
+<body>
+    <h1>Danh sách học sinh</h1>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }} - {{ student.classroom }} - {{ student.score }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {{ total_students }}</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+
+<h3>Phân bố học lực</h3>
+<ul>
+  {% for item in academic_status %}
+    <li>{{ item.academic }}: {{ item.count }} học sinh</li>
+  {% endfor %}
+</ul>
+
+<canvas id="academicChart" width="400" height="400"></canvas>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  // Nghĩa là dữ liệu học lực của học sinh được truyền từ view sang template và sau đó được sử dụng trong JavaScript để tạo biểu đồ.
+  // Dữ liệu này được định dạng dưới dạng một đối tượng JavaScript với hai mảng: labels và counts.
+  // Mảng labels chứa các nhãn hiển thị cho từng trạng thái học lực (ví dụ: "Giỏi", "Khá", "Trung bình", "Yếu").
+  // Mảng counts chứa số lượng học sinh tương ứng với từng trạng thái học lực.
+  // Dữ liệu này sau đó được sử dụng để cấu hình và hiển thị biểu đồ trong JavaScript.  
+  const academicData = { 
+    labels: [{% for item in academic_status %}'{{ item.academic }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+</script>
+
+{% load static %}
+<script src="{% static 'students/js/dashboard.js' %}"></script>
+
+
+<script>
+  if (typeof renderAcademicChart === 'function') {
+    renderAcademicChart(academicData);
+  }
+</script>
+
+{% endblock scripts %}

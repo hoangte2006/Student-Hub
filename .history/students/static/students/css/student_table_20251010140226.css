@@ -1,0 +1,11 @@
+.btn-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.btn-close:hover {
+    cursor: pointer;
+    transform: scale(1)
+    box-shadown: 0 0 5px rgb
+}

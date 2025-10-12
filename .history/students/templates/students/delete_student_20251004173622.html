@@ -1,0 +1,8 @@
+<h2>Xác nhận xoá học sinh</h2>
+<p>Bạn có chắc muốn xoá học sinh "{{ student.name }}" không?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Xoá</button>
+    <a href="{% url 'student_list' %}" class="btn btn-secondary">Huỷ</a>
+</form>

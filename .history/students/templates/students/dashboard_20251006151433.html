@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {{ total_students }}</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+<h3>Phân bố học lực</h3>
+<ul>
+    {% for item in academic_status %}
+        <li>{{ item.academic_status }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>
+{% endblock %}

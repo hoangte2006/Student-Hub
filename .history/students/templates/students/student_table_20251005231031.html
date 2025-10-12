@@ -1,0 +1,93 @@
+{% block content %}
+
+{% if deleted_student %}
+  <div class="alert alert-warning d-flex justify-content-between align-items-center">
+    Đã xoá học sinh <strong>{{ deleted_student.name }}</strong>.
+    <form method="post" action="{% url 'undo_delete' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm btn-outline-dark">Hoàn tác</button>
+    </form>
+  </div>
+
+  <script>
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+      document.querySelector('.alert').style.display = 'none';
+    }, 3000);
+  </script>
+{% endif %}
+
+{% if students %}
+  <table class="table table-bordered table-striped">  
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên</th>
+        <th>Lớp</th>
+        <th>Giới tính</th>
+        <th>Học lực</th>
+        <th>Trạng thái</th>
+        <th>Điểm</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for student in students %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ student.name }}</td>
+          <td>{{ student.classroom }}</td>
+          <td>{{ student.get_gender_display }}</td>
+          <td>
+            <span class="badge 
+              {% if student.academic == 'G' %}bg-success
+              {% elif student.academic == 'K' %}bg-primary
+              {% elif student.academic == 'T' %}bg-warning
+              {% else %}bg-danger
+              {% endif %}
+            ">
+              {{ student.get_academic_display }}
+            </span>
+          </td>
+          <td>
+            <span class="badge 
+              {% if student.status == 'A' %}bg-success
+              {% elif student.status == 'D' %}bg-danger
+              {% elif student.status == 'G' %}bg-primary
+              {% else %}bg-secondary
+              {% endif %}
+            ">
+              {{ student.get_status_display }}
+            </span>
+          </td>    
+          <td>
+            <span class="
+              {% if student.academic == 'G' %}text-success
+              {% elif student.academic == 'K' %}text-primary
+              {% elif student.academic == 'T' %}text-warning
+              {% else %}text-danger
+              {% endif %}
+            ">
+              {{ student.score|floatformat:1 }}
+            </span>
+          </td>
+          
+          <td>
+            <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning">Sửa</a>
+            <a href="{% url 'delete_student' student.id %}"
+              class="btn btn-sm btn-danger"
+              onclick="return confirm('Bạn có chắc muốn xoá học sinh này?');">
+              Xoá
+            </a>
+          </td>
+        </tr>
+      {% endfor %}  
+    </tbody>
+  </table>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}
+
+
+{% endblock %}

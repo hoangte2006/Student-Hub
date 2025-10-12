@@ -1,0 +1,118 @@
+
+{# student_table.html - Cột Trạng thái đã gộp (Multiple Statuses) #}
+{% load static %}
+
+{% if students %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped"> 
+      <thead>
+        <tr>
+          <th>STT</th> {# Sử dụng forloop.counter0|add:students.start_index để đánh số chính xác khi phân trang #}
+          <th>Tên</th>
+          <th>Lớp</th>
+          <th>Giới tính</th>
+          <th>Học lực</th>
+          <th>Trạng thái</th>  {# Cột này giờ hiển thị 3 trạng thái #}
+          <th>Điểm</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for student in students %}
+            <tr>
+              <td>{{ forloop.counter0|add:students.start_index }}</td> 
+              <td>
+                <a href="{% url 'student_detail' student.id %}" class="text-dark text-decoration-none">
+                  {{ student.name }} 
+                  <span class="ms-1" style="font-size: 0.8em;">&uarr;</span> 
+                </a>
+              </td>
+              <td>{{ student.classroom }}</td>
+              <td>{{ student.get_gender_display }}</td>
+              
+              {# MÀU SẮC HỌC LỰC #}
+              <td>
+                <span class="badge 
+                  {% if student.academic == 'G' %}bg-success    
+                  {% elif student.academic == 'K' %}bg-primary  
+                  {% elif student.academic == 'TB' %}bg-warning  
+                  {% else %}bg-danger                             
+                  {% endif %}
+                ">
+                  {{ student.get_academic_display }}
+                </span>
+              </td>
+              
+              {# CỘT TRẠNG THÁI MỚI (Gộp 3 loại trạng thái) #}
+              <td>
+              <span class="badge {{ student.get_study_badge_class }} me-1" title="Đang học">
+                {{ student.get_study_status_display }} {# Trong models.py xử lý #}
+              </span>
+
+              <div class="modal fade" id="applicationModal{{ student.id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ student.id }}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-warning text-white">
+                      <h5 class="modal-title" id="applicationModalLabel{{ student.id }}">Chi tiết hồ sơ</h5>
+                      <button type="button" class="badge bg-info text-dark me-1"
+                              data-bs-toggle="modal"
+                              data-bs-target="#applicationModal{{ student.id }}">
+                        Hồ sơ
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p><strong>Trạng thái:</strong> {{ student.get_application_status_display }}</p>
+                      <p><strong>Ngày nộp hồ sơ:</strong> {{ student.application_date|date:"d/m/Y" }}</p>
+                      <p><strong>Ghi chú:</strong> {{ student.application_note|default:"Không có ghi chú" }}</p>
+                    </div>
+                  </div>    
+                </div>  
+              </div>
+
+              <!-- Modal Thanh toán -->
+              <div class="modal fade" id="paymentModal{{ student.id }}" tabindex="-1" aria-labelledby="paymentModalLabel{{ student.id }}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-dark text-white">
+                      <h5 class="modal-title" id="paymentModalLabel{{ student.id }}">Chi tiết thanh toán - {{ student.name }}</h5>
+                      <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" 
+                        aria-label="Đóng"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p><strong>Trạng thái:</strong> {{ student.get_payment_status_display }}</p>
+                      <p><strong>Ngày thanh toán:</strong> {{ student.payment_date|date:"d/m/Y" }}</p>
+                      <p><strong>Số tiền đã thanh toán:</strong> {{ student.amount_paid|floatformat:0 }} VNĐ</p>
+                      <p><strong>Ghi chú:</strong> {{ student.payment_note|default:"Không có ghi chú" }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              </td>
+              
+              {# MÀU SẮC ĐIỂM #}
+              <td>
+                <span class="
+                  {% if student.academic == 'G' %}text-success
+                  {% elif student.academic == 'K' %}text-primary
+                  {% elif student.academic == 'TB' %}text-warning
+                  {% else %}text-danger
+                  {% endif %}
+                ">
+                  {{ student.score|floatformat:1 }}
+                </span>
+              </td>
+              
+              <td>
+                <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning">Sửa</a>
+                <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xoá học sinh này?');">Xoá</a>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>Không có học sinh nào.</p>
+{% endif %}

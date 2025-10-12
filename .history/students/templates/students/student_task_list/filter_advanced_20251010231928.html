@@ -1,0 +1,78 @@
+<!-- filter_advanced.html -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="advancedFilter">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Bộ lọc nâng cao</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form method="get" class="row g-3">
+      <!-- Các trường lọc nâng cao -->
+      <div class="col-md-6">
+        <label for="academic" class="form-label">Học lực</label>
+        <select name="academic" class="form-select">
+          <option value="">-- Chọn --</option>
+          <option value="Giỏi" {% if filters.academic == 'Giỏi' %}selected{% endif %}>Giỏi</option>
+          <option value="Khá" {% if filters.academic == 'Khá' %}selected{% endif %}>Khá</option>
+          <option value="Trung bình" {% if filters.academic == 'Trung bình' %}selected{% endif %}>Trung bình</option>
+          <option value="Yếu" {% if filters.academic == 'Yếu' %}selected{% endif %}>Yếu</option>
+        </select>
+      </div>
+
+      <!-- Thêm các bộ lọc khác tương tự -->
+
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary w-100">Áp dụng bộ lọc</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- filter_advanced.html -->
+{% if students %}
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>STT</th>
+          <th>Họ và tên</th>
+          <th>Lớp học</th>
+          <th>Giới tính</th>
+          <th>Học lực</th>
+          <th>Trạng thái</th>
+          <th>Điểm</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+            <tr>
+              <td>{{ forloop.counter0|add:students.start_index }}</td>
+              <td>{{ student.name }}</td>
+              <td>{{ student.classroom }}</td>
+              
+              {# MÀU SẮC GIỚI TÍNH #}
+              <td>
+                <span class="badge {% if student.gender == 'Nam' %}bg-primary{% else %}bg-danger{% endif %}">
+                  {{ student.gender }}
+                </span>
+              </td>
+              
+              {# MÀU SẮC HỌC LỰC #}
+              <td>
+                <span class="badge 
+                  {% if student.academic == 'Giỏi' %}bg-success    
+                  {% elif student.academic == 'Khá' %}bg-primary  
+                  {% elif student.academic == 'Trung bình' %}bg-warning  
+                  {% else %}bg-danger                             
+                  {% endif %}
+                ">
+                  {{ student.academic }}
+                </span>
+              </td> 
+            
+              {# CỘT TRẠNG THÁI MỚI (Gộp 3 loại trạng thái) #}
+              <td>
+                <span class="badge {{ student.get_study_badge_class }} me-1">
+                  {{ student.get_study_status_display }}
+                </span>
+              </td> 
+                <td>{{ student.score }}</td>

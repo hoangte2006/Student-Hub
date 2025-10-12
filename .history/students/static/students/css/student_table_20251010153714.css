@@ -1,0 +1,39 @@
+.btn-close {
+    cursor: pointer;
+    padding: 0.5em 0.75em;
+    font-size: 0.85em;
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease;
+
+}
+
+.btn-close.custom-hover:hover {
+}
+
+.modal-header {
+    background-color: #343a40; /* nền tối */
+    color: white;
+}
+
+.modal-body p {
+    margin: 0.5rem 0;
+    font-size: 0.95em;
+}
+
+[data-bs-toggle="tooltip"] {
+  cursor: help;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translateY(-20px);
+}
+
+.modal.show .modal-dialog {
+  transform: translateY(0);
+}

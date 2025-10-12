@@ -1,0 +1,14 @@
+
+<form method="get" class="row g-3 mb-4">
+  <div class="col-md-2">
+    <div class="form-floating">
+      <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Tìm theo tên" value="{{ filters.keyword }}">
+      <label for="keyword">Tìm theo tên</label>
+    </div>
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+  <button type="submit" class="btn btn-primary w-100 me-2">Lọc</button>
+  <a href="{% url 'student_list' %}" class="btn btn-outline-secondary w-100">Xóa lọc</a>
+
+</div>
+</form>

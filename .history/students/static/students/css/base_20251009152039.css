@@ -1,0 +1,20 @@
+/* Hiện dropdown khi trỏ chuột vào */
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; 
+    visibility: visible;
+    opacity: 1;
+    transition: translateY(0); /* Hiệu ứng trượt xuống */
+}
+
+
+.dropdown-menu {
+    transition: opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    pointer-events: auto;
+}

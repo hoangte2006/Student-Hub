@@ -1,0 +1,39 @@
+.navbar .nav-link {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.navbar .nav-link:hover {
+  color: #ffffff !important;
+}
+
+.navbar .nav-link.active {
+  font-weight: 700; 
+  color: #ffc107 !important; /* vàng nổi bật */
+  border-bottom: 2px solid #ffc107;
+}
+
+#aiAssistant {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: sans-serif;
+}
+
+#aiBubble {
+  background: #2196f3;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#aiBubble:hover {
+  background: #1976d2;
+}

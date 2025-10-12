@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Sửa học sinh{% endblock %}
+
+{% block content %}
+
+<h2>Sửa học sinh: {{ student.name }}</h2>
+<!-- Tạo bảng edit hợp lý chi tiết -->
+
+<form method="post" class="row g-3">    
+    {% csrf_token %}
+    
+    <div class="col-md-6">
+        {{ form.name.label_tag }} {{ form.name }}
+    </div>
+    <div class="col-md-3">
+        {{ form.age.label_tag }} {{ form.age }}
+    </div>
+    <div class="col-md-3">
+        {{ form.classroom.label_tag }} {{ form.classroom }}
+    </div>
+    
+    <div class="col-md-4">
+        {{ form.gender.label_tag }} {{ form.gender }}
+    </div>
+    <div class="col-md-4">
+        {{ form.study_status.label_tag }} {{ form.study_status }}
+    </div>
+    <div class="col-md-4">
+        {{ form.academic.label_tag }} {{ form.academic }}
+    </div>  
+    <div class="col-md-4">
+        {{ form.score.label_tag }} {{ form.score }}
+    </div>
+    <div class="col-md-8">
+        {{ form.email.label_tag }} {{ form.email }}
+    </div>
+    <div class="col-md-6">
+        {{ form.birthday.label_tag }} {{ form.birthday }}
+    </div>
+    <div class="col-md-6">
+        {{ form.address.label_tag }} {{ form.address }}
+    </div>
+    <div class="col-md-6">
+        {{ form.phone.label_tag }} {{ form.phone }}
+    </div>
+    <div class="col-md-6">
+        {{ form.amount_paid.label_tag }} {{ form.amount_paid }}
+    </div>
+    <div class="col-md-6">
+        {{ form.application_date.label_tag }} {{ form.application_date }}
+    </div>
+    <div class="col-md-6">
+        {{ form.payment_date.label_tag }} {{ form.payment_date }}
+    </div>
+    <div class="col-md-6">
+        {{ form.application_status.label_tag }} {{ form.application_status }}
+    </div>
+    <div class="col-md-6">
+        {{ form.payment_status.label_tag }} {{ form.payment_status }}
+    </div>
+    <div class="col-md-6">
+        {{ form.created_at.label_tag }} {{ form.created_at }}
+    </div>
+    <div class="col-md-6">
+        {{ form.updated_at.label_tag }} {{ form.updated_at }}
+    </div>
+    <div class="col-12">
+        {{ form.application_note.label_tag }} {{ form.application_note }}
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a href="{% url 'student_detail' student.id %}" class="btn btn-secondary">Hủy</a>
+    </div>
+
+</form>
+
+<a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>
+{% endblock %}

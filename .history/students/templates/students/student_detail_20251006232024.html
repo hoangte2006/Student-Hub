@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ object.full_name }}</h2>
+  <p>Lớp: {{ object.class_name }}</p>
+  <p>Giới tính: {{ object.get_gender_display }}</p>
+  <p>Trạng thái: {{ object.get_status_display }}</p>
+  <p>Điểm trung bình: {{ object.score }}</p>
+  <p>Ngày nhập học: {{ object.join_date }}</p>
+{% endblock %}

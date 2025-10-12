@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Thêm học sinh{% endblock %}
+
+{% block content %}
+<h2>Thêm học sinh mới</h2>
+<form method="post" class="border p-4 rounded shadow-sm bg-light">
+  <div class="mb-3">
+    {{ field.label_tag }}
+    {{ field }}
+    {% csrf_token %}
+    {{ form.as_p }}
+  <button type="submit">Lưu</button>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Thêm học sinh{% endblock %}
+
+{% block content %}
+
+from django.contrib import messages
+
+messages.success(request, 'Thêm học sinh thành công!')
+<h2>Thêm học sinh mới</h2>
+<form method="post" class="border p-4 rounded shadow-sm bg-light">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="mb-3">
+    {{ field.label_tag }}
+    {{ field }}
+    {% if field.errors %}
+      <div class="text-danger">
+        {{ field.errors }}
+      </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <button type="submit">Lưu</button>
+</form>
+{% endblock %}

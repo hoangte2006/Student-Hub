@@ -1,0 +1,70 @@
+.navbar .nav-link {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.navbar .nav-link:hover {
+  color: #ffffff !important;
+}
+
+.navbar .nav-link.active {
+  font-weight: 700; 
+  color: #ffc107 !important; /* vàng nổi bật */
+  border-bottom: 2px solid #ffc107;
+}
+
+#aiAssistant {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: sans-serif;
+}
+
+#aiBubble {
+  background: #2196f3;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#aiBubble:hover {
+  background: #1976d2;
+}
+#aiPopup {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+  z-index: 9999;
+}
+#aiHeader {
+  background: #2196f3;
+  color: white;
+  padding: 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+#aiMessages {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
+#aiInput {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+}

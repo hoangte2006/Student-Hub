@@ -1,0 +1,19 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="advancedFilter">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Bộ lọc nâng cao</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="academic" class="form-label">Học lực</label>
+        <select name="academic" class="form-select">
+          <option value="">-- Chọn --</option>
+          <option value="Giỏi" {% if filters.academic == 'Giỏi' %}selected{% endif %}>Giỏi</option>
+          ...
+        </select>
+      </div>
+      <!-- các bộ lọc khác -->
+    </div>
+  </div>
+</div>

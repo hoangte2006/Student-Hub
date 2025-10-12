@@ -1,0 +1,21 @@
+/* Dropdown mặc định ẩn */
+.dropdown-hover .dropdown-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Khi hover vào dropdown, menu hiện ra */
+.dropdown-hover:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+#sidebar .nav-link:hover {
+  background-color: #343a40;
+  border-radius: 5px;
+}

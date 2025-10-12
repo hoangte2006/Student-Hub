@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <p>Lớp: {{ object.classroom }}</p>
+  <p>Giới tính: {{ object.get_gender_display }}</p>
+  <p>Trạng thái: {{ object.get_status_display }}</p>
+  <p>Học lực: {{ object.get_academic_display }}</p>
+  <p>Điểm trung bình: {{ object.score }}</p>
+  <p>Ngày sinh: {{ object.birthday }}</p>
+{% endblock %}
+<a href="{% url 'student_edit' object.id %}" class="btn btn-warning">
+  Sửa thông tin
+</a>

@@ -1,0 +1,18 @@
+/* Dropdown menu mặc định ẩn và trượt lên */
+.dropdown-menu {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Khi hover vào dropdown, menu hiện ra và trượt xuống */
+.dropdown:hover .dropdown-menu {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  margin-top: 0;
+}

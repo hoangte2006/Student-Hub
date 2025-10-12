@@ -1,0 +1,3 @@
+.dropdown:hower .dropdown-menu {
+    display: block;
+}

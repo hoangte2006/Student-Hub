@@ -1,0 +1,15 @@
+{% if deleted_student %}
+  <div class="alert alert-warning d-flex justify-content-between align-items-center">
+    Đã xoá học sinh <strong>{{ deleted_student.name }}</strong>.
+    <form method="post" action="{% url 'undo_delete' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm btn-outline-dark">Hoàn tác</button>
+    </form>
+  </div>
+  
+  <script>
+    setTimeout(() => {
+      document.querySelector('.alert').style.display = 'none';
+    }, 3000);
+  </script>
+{% endif %}

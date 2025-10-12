@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}   
+
+<h2>Dashboard</h2>
+<p>Tổng số học sinh: {{ total_students }}</p>
+<p>Điểm trung bình: {{ avg_score|floatformat:2 }}</p>
+
+<h3>Phân bố học lực</h3>
+<ul>
+    {% for item in academic_status %}
+        <li>{{ item.academic_status }}: {{ item.count }} học sinh</li>
+    {% endfor %}
+</ul>
+
+{% load static %}
+<canvas id="academicChart" width="400" height="400"></canvas>
+
+<!-- 1. KHỐI SCRIPT CHỨA DỮ LIỆU (Cần đặt TRƯỚC khi gọi dashboard.js) -->
+<script>
+  // Sửa lỗi: Đảm bảo nhãn (labels) sử dụng tên trường 'academic_status' để nhất quán với phần HTML hiển thị.
+  // Thêm '{{ ... }}' vào dấu nháy đơn và sử dụng {% if not forloop.last %},{% endif %} để tránh dấu phẩy cuối cùng.
+  const academicData = {
+    labels: [{% for item in academic_status %}'{{ item.academic_status }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    counts: [{% for item in academic_status %}{{ item.count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+  };
+  
+  // Chúng ta sẽ gọi hàm renderAcademicChart(academicData) sau khi dashboard.js được tải
+</script>
+
+<!-- 2. KHỐI SCRIPT TẢI HÀM (Cần đặt SAU khi khối dữ liệu được tạo) -->
+<script src="{% static 'students/js/dashboard.js' %}"></script>
+
+<!-- 3. GỌI HÀM SAU KHI CẢ DỮ LIỆU VÀ HÀM ĐỀU SẴN SÀNG -->
+<!-- Tùy chọn: Nếu dashboard.js tự động gọi hàm, bạn không cần khối script này. 
+   Nếu không, bạn cần một khối script khác hoặc thay đổi logic trong dashboard.js
+   để đảm bảo hàm được gọi sau khi file đã được tải. 
+   
+   Tuy nhiên, cách phổ biến nhất là file dashboard.js sẽ tự động chạy lệnh sau khi tải.
+   Nếu hàm không tự chạy, bạn có thể gọi nó ở đây:
+   
+<script>
+    if (typeof renderAcademicChart === 'function') {
+        renderAcademicChart(academicData);
+    }
+</script>
+-->
+{% endblock %}

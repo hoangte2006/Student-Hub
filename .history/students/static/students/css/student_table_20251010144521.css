@@ -1,0 +1,17 @@
+.btn-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.btn-close:hover {
+    cursor: pointer;
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(0,0,0,0,0.2);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;   
+    color: white;
+}

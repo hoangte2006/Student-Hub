@@ -1,0 +1,39 @@
+.btn-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.btn-close:hover {
+    cursor: pointer;
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(0,0,0,0,0.2);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;   
+    color: white;
+}
+
+.modal-body p {
+    margin: 0.5rem 0;
+    frot-size: 0.95em;
+}
+
+[data-bs-toggle="tooltip"] {
+  cursor: help;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.modal-footer .btn {
+    min-width: 100px;
+}
+
+.modal-fade {
+    transform
+}

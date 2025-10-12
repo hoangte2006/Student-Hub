@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Thông tin học sinh{% endblock %}
+
+{% block content %}
+
+<h1>Thông tin học sinh</h1>
+<ul>
+    <li>Tên: {{ student.name }}</li>
+    <li>Lớp: {{ student.classroom }}</li>
+    <li>Điểm: {{ student.score }}</li>
+    <li>Ngày sinh: {{ student.date_of_birth }}</li>
+    <li>Địa chỉ: {{ student.address }}</li>
+    <li>Email: {{ student.email }}</li> 
+</ul>
+<a href="{% url 'student_list' %}">Quay lại danh sách học sinh</a>

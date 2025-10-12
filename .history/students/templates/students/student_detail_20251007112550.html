@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Chi tiết học sinh: {{ object.name }}</h3>
+    <p>Tuổi: {{ object.age }}</p>
+    <p>Lớp: {{ object.classroom }}</p>
+    <p>Giới tính: {{ object.get_gender_display }}</p>
+    <p>Trạng thái: {{ object.get_status_display }}</p>
+    <p>Học lực: {{ object.get_academic_display }}</p>
+    <p>Điểm trung bình: {{ object.score }}</p>
+    <p>Ngày sinh: {{ object.birthday }}</p>
+    <p>Email: {{ object.email }}</p>
+    <p>Ngày tạo: {{ object.created_at }}</p>
+    <p>Ngày cập nhật: {{ object.updated_at }}</p>
+
+    <a href="{% url 'edit_student' object.id %}" class="btn btn-warning">
+    Sửa thông tin
+    </a>
+    <!-- xác nhận xoá -->
+     
+
+    <a href="{% url 'student_list' %}" class="btn btn-secondary">Quay lại danh sách học sinh</a>
+
+{% endblock %}
+

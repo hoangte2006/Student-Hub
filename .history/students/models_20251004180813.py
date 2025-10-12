@@ -1,0 +1,46 @@
+from django.db import models
+
+class Student(models.Model): # ( ) đây là cách kế thừa từ lớp DJango, Model để tạo mô hình dữ liệu
+
+    GENDER_CHOICES = [
+        ('M', "Nam"),
+        ('F', "Nữ"),
+        ('O', "Khác"),
+    ]
+
+    STATUS_CHOICES = [ 
+        ('G', 'Tốt'),
+        ('K', 'Khá'),
+        ('T', 'Trung bình'),
+        ('Y', 'Yếu'),
+    ]
+
+#Tham số	Ý nghĩa	Ví dụ
+#max_length	Độ dài tối đa (bắt buộc với CharField)	max_length=50
+#choices	Danh sách lựa chọn (hiển thị dropdown)	choices=GENDER_CHOICES
+#default	Giá trị mặc định	default='M'
+#null	Cho phép để trống trong database	null=True
+#blank	Cho phép để trống trong form	blank=True
+#unique	Không được trùng lặp	unique=True
+#verbose_name	Tên hiển thị dễ hiểu	verbose_name='Họ tên'
+
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    classroom = models.CharField(max_length=20)
+    score = models.FloatField()
+    email = models.EmailField(blank=True, null=True)         
+    birthday = models.DateField(blank=True, null=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='G')
+
+    def __str__(self):
+        return f"{self.name} - {self.classroom}"
+
+class DeletedStudent(models.Model):
+    name = models.CharField(max_length=100)
+    classroom = models.CharField(max_length=50)
+    gender = models.CharField(max_length=1)
+    score = models.FloatField()
+    email = models.EmailField()
+    birthday = models.DateField()
+    deleted_at = models.DateTimeField(auto_now_add=True)

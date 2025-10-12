@@ -1,0 +1,13 @@
+<body>
+  {% block content %}
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <!-- Nội dung từng trang sẽ hiển thị ở đây -->
+  {% endblock %}
+</body>

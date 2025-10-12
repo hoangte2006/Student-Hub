@@ -1,0 +1,63 @@
+.sidebar {
+  width: 60px; /* Chiều rộng mặc định */
+  min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao cửa sổ */
+  transition: width 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+  overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+  position: fixed; /* Cố định sidebar */
+  top: 0; /* Đặt ở trên cùng */
+  left: 0;       /* Đặt ở bên trái */
+  z-index: 1000; /* Đảm bảo sidebar nằm trên cùng */
+    background-color: #343a40; /* Màu nền sidebar */
+    color: white; /* Màu chữ */
+    border-right: 1px solid #dee2e6; /* Viền bên phải */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Bóng nhẹ bên phải */
+    font-family: 'Arial', sans-serif; /* Font chữ */
+    font-size: 14px; /* Kích thước chữ */
+    font-weight: 500; /* Độ đậm chữ */
+    text-align: center; /* Căn giữa chữ */
+    line-height: 1.5; /* Chiều cao dòng */
+    letter-spacing: 0.5px; /* Khoảng cách giữa các chữ cái */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+    user-select: none; /* Không cho phép chọn chữ */
+    box-sizing: border-box; /* Bao gồm padding và border trong kích thước */
+    padding-bottom: 10px; /* Padding dưới cùng */
+    margin: 0; /* Loại bỏ margin */
+    list-style: none; /* Loại bỏ dấu chấm đầu dòng */
+    text-decoration: none; /* Loại bỏ gạch chân */
+    white-space: nowrap; /* Không xuống dòng */
+    overflow: hidden; /* Ẩn phần tràn */
+    text-overflow: ellipsis; /* Hiển thị dấu chấm khi tràn */
+    border-radius: 0 5px 5px 0; /* Bo góc bên phải */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Bóng nhẹ bên phải */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+    z-index: 1000; /* Đảm bảo sidebar nằm trên cùng */
+    
+}
+
+.sidebar:hover { /* Mở rộng khi hover */
+  width: 220px; /* Chiều rộng khi hover */
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .menu-text {
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar:hover .menu-text {
+  opacity: 1;
+}

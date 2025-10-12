@@ -1,0 +1,16 @@
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top : 0;
+    
+}
+
+.dropdown-menu {
+  transition: opacity 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+
+{}
+
+<h1> Chào mừng đến với Student Hub</h1>
+<p>Quản lý học sinh dễ dàng và hiệu quả.</p>
+
+<!-- Các mục chọn ở trang chủ, làm đẹp hơn-->
+<div class="dashboard-options">
+    <a href="{% url 'student_list' %}" class="dashboard-option">
+        <div class="icon">👨‍🎓</div>
+        <div class="label">Quản lý học sinh</div>
+    </a>
+    <a href="{% url 'dashboard' %}" class="dashboard-option">
+        <div class="icon">📊</div>
+        <div class="label">Xem báo cáo</div>
+    </a>
+    <a href="{% url 'trash_list' %}" class="dashboard-option">
+        <div class="icon">🗑️</div>
+        <div class="label">Thùng rác</div>
+    </a>
+</div>
+{% endblock %}
